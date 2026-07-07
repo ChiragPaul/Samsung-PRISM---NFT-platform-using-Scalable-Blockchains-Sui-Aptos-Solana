@@ -36,13 +36,18 @@ export default function Navbar() {
               Create
             </NavLink>
 
-            <span className={baseStyle}>Activity</span>
+            <NavLink
+              to="/activity"
+              className={({ isActive }) => (isActive ? activeStyle : baseStyle)}
+            >
+              Activity
+            </NavLink>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
           <span className="hidden rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-zinc-300 lg:inline-flex">
-            Devnet
+            Testnet
           </span>
 
           <div className="rounded-full border border-white/8 bg-white/[0.04] px-1.5 py-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.3)]">

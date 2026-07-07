@@ -32,10 +32,27 @@ export const ipfsToHttp = (url: string) => {
   if (!url) return ""
 
   if (url.startsWith("ipfs://")) {
-    return url.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")
+    return url.replace("ipfs://", "https://ipfs.io/ipfs/")
   }
 
   return url
+}
+
+export const ipfsToGatewayUrls = (url: string) => {
+  if (!url) {
+    return []
+  }
+
+  if (!url.startsWith("ipfs://")) {
+    return [url]
+  }
+
+  const cidPath = url.replace("ipfs://", "")
+  return [
+    `https://ipfs.io/ipfs/${cidPath}`,
+    `https://cloudflare-ipfs.com/ipfs/${cidPath}`,
+    `https://gateway.pinata.cloud/ipfs/${cidPath}`,
+  ]
 }
 
 export const uploadFileToIPFS = async (file: File) => {
@@ -60,7 +77,7 @@ export const uploadFileToIPFS = async (file: File) => {
   }
 }
 
-export const uploadJSONToIPFS = async (metadata: any) => {
+export const uploadJSONToIPFS = async (metadata: Record<string, unknown>) => {
   try {
     const res = await axios.post(
       "https://api.pinata.cloud/pinning/pinJSONToIPFS",

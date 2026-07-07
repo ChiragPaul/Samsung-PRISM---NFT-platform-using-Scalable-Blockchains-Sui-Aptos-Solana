@@ -1,20 +1,58 @@
 import { uploadFileToIPFS, uploadJSONToIPFS } from "../utils/ipfs"
 import { useWallet } from "@aptos-labs/wallet-adapter-react"
-import { useState } from "react"
+import type { InputTransactionData } from "@aptos-labs/wallet-adapter-core"
+import { useEffect, useRef, useState } from "react"
 import type { ChangeEvent } from "react"
 import {
   APTOS_NETWORK_NAME,
   REAL_NFT_MINT_FUNCTION,
   REAL_NFT_MODULE_ADDRESS,
 } from "../constants/aptos"
+import { aptos, fetchAccountNFTs, invalidateAptosCaches } from "../utils/aptosClient"
+import { useActivity } from "../hooks/useActivity"
+import {
+  buildAptosTransactionToast,
+  isUserRejectedError,
+  logAptosTransactionError,
+} from "../utils/errors"
+import { ensureNftStore } from "../utils/storeInitialization"
+import { submitEntryFunctionTransaction } from "../utils/walletTransaction"
+import { useToast } from "../hooks/useToast"
 
 export default function Create() {
-  const { account, signAndSubmitTransaction, connected, network, wallet } = useWallet()
+  const {
+    account,
+    signAndSubmitTransaction,
+    connected,
+    network,
+  } = useWallet()
+  const { recordActivity } = useActivity()
+  const { showToast } = useToast()
 
   const [name, setName] = useState("")
   const [loading, setLoading] = useState(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [successExplorerUrl, setSuccessExplorerUrl] = useState<string | null>(null)
+  const [successTxHash, setSuccessTxHash] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
+  const mintInFlightRef = useRef(false)
+  const walletAddress = account?.address?.toString().toLowerCase() ?? null
+
+  const resetState = () => {
+    setName("")
+    setFile(null)
+    setPreview(null)
+    setLoading(false)
+    setSuccessMessage(null)
+    setSuccessExplorerUrl(null)
+    setSuccessTxHash(null)
+    mintInFlightRef.current = false
+  }
+
+  useEffect(() => {
+    resetState()
+  }, [walletAddress])
 
   // 📁 FILE HANDLER
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +66,10 @@ export default function Create() {
   // 🚀 FINAL MINT
   const handleMint = async () => {
     try {
+      if (mintInFlightRef.current) {
+        return
+      }
+
       // 🔐 WALLET CHECK
       if (!connected || !account?.address) {
         alert("Connect wallet first ❌")
@@ -47,19 +89,21 @@ export default function Create() {
         return
       }
 
+      mintInFlightRef.current = true
       setLoading(true)
+      setSuccessMessage(null)
+      setSuccessExplorerUrl(null)
+      setSuccessTxHash(null)
 
-      console.log("Wallet:", account.address)
+      await ensureNftStore({
+        aptos,
+        accountAddress: account.address.toString(),
+        signAndSubmitTransaction,
+      })
 
       // ✅ STEP 1: Upload IMAGE
       const imageURI = await uploadFileToIPFS(file)
       if (!imageURI) throw new Error("Image upload failed")
-
-      console.log("IMAGE URI:", imageURI)
-      console.log(
-        "TEST IMAGE:",
-        imageURI.replace("ipfs://", "https://ipfs.io/ipfs/")
-      )
 
       // ✅ STEP 2: Create METADATA
       const metadata = {
@@ -68,15 +112,11 @@ export default function Create() {
         image: imageURI, // ✅ MUST BE IMAGE CID
       }
 
-      console.log("METADATA:", metadata)
-
       // ✅ STEP 3: Upload METADATA
       const metadataURI = await uploadJSONToIPFS(metadata)
       if (!metadataURI) throw new Error("Metadata upload failed")
 
-      console.log("METADATA URI:", metadataURI)
-
-      const payload: Parameters<typeof signAndSubmitTransaction>[0] = {
+      const payload: InputTransactionData = {
         data: {
           function: REAL_NFT_MINT_FUNCTION,
           typeArguments: [],
@@ -84,36 +124,68 @@ export default function Create() {
         },
       }
 
-      console.log("MINT DEBUG:", {
-        wallet: wallet?.name ?? "unknown",
-        account: account.address.toString(),
-        walletNetwork: network?.name ?? "unknown",
-        expectedNetwork: APTOS_NETWORK_NAME,
-        moduleAddress: REAL_NFT_MODULE_ADDRESS,
-        function: REAL_NFT_MINT_FUNCTION,
-        functionArguments: [name, metadataURI],
+      const tx = await submitEntryFunctionTransaction({
+        sender: account.address.toString(),
+        payload,
+        signAndSubmitTransaction,
+      })
+      await aptos.waitForTransaction({
+        transactionHash: tx.hash,
+        options: {
+          checkSuccess: true,
+        },
       })
 
-      const tx = await signAndSubmitTransaction(payload)
+      invalidateAptosCaches([account.address.toString()])
+      const ownedNfts = await fetchAccountNFTs(account.address.toString())
+      const newestTokenId = ownedNfts
+        .map((nft) => Number(nft.id))
+        .filter((id) => !Number.isNaN(id))
+        .sort((left, right) => right - left)[0]
 
-      console.log("TX SUCCESS:", tx)
+      recordActivity({
+        walletAddress: account.address.toString(),
+        type: "MINTED",
+        title: name,
+        image: imageURI,
+        tokenId:
+          typeof newestTokenId === "number" ? `#${newestTokenId}` : "New Mint",
+        txHash: tx.hash,
+      })
 
-      alert("NFT Minted Successfully 🚀")
-
-      // 🔄 RESET STATE
+      setSuccessMessage(`Minted ${name} successfully.`)
+      setSuccessExplorerUrl(
+        `https://explorer.aptoslabs.com/txn/${tx.hash}?network=testnet`
+      )
+      setSuccessTxHash(tx.hash)
+      showToast({
+        variant: "success",
+        title: "Mint successful",
+        description: `Transaction submitted. Hash: ${tx.hash}`,
+      })
       setName("")
       setFile(null)
       setPreview(null)
 
-    } catch (error: any) {
-      console.error("FULL ERROR:", error)
+    } catch (error: unknown) {
+      logAptosTransactionError("MINT", error)
 
-      if (error?.message?.includes("User rejected")) {
-        alert("Transaction cancelled ❌")
+      if (isUserRejectedError(error)) {
+        showToast({
+          variant: "info",
+          title: "Transaction cancelled",
+          description: "You rejected the mint request in your wallet.",
+        })
       } else {
-        alert(error?.message || "Mint failed ❌")
+        const toast = buildAptosTransactionToast(error, "Mint failed")
+        showToast({
+          variant: "error",
+          title: toast.title,
+          description: toast.description,
+        })
       }
     } finally {
+      mintInFlightRef.current = false
       setLoading(false)
     }
   }
@@ -142,6 +214,29 @@ export default function Create() {
 
         <div className="mt-14 grid gap-10 xl:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-[36px] border border-white/8 bg-[#121116]/90 p-8 shadow-[0_40px_120px_rgba(0,0,0,0.45)]">
+            {successMessage ? (
+              <div className="mb-6 rounded-[24px] border border-emerald-400/20 bg-emerald-400/5 p-5 text-sm text-emerald-100">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                  <span>{successMessage}</span>
+                  {successExplorerUrl ? (
+                    <a
+                      href={successExplorerUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-cyan-300 underline underline-offset-4"
+                    >
+                      View on Explorer
+                    </a>
+                  ) : null}
+                </div>
+                {successTxHash ? (
+                  <p className="mt-3 font-mono text-xs text-emerald-200/80">
+                    Transaction hash: {successTxHash}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
+
             <div className="space-y-8">
               <div>
                 <p className="mb-3 text-xs uppercase tracking-[0.3em] text-fuchsia-200">

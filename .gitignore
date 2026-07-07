@@ -13,3 +13,5 @@ contracts/build/
 
 backend/node_modules/
 frontend_backup/
+frontend.zip
+node_modules/

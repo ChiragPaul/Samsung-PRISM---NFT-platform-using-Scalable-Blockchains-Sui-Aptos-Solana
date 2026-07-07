@@ -100,32 +100,51 @@ module MyNFT::RealNFT {
     ) acquires NFTStore {
 
         let seller_store =
-            borrow_global_mut<NFTStore>(
-                seller
-            );
+    borrow_global_mut<NFTStore>(
+        seller
+         );
 
-        let nft =
-            table::remove(
-                &mut seller_store.nfts,
-                nft_id
-            );
+        assert!(
+        table::contains(
+        &seller_store.nfts,
+        nft_id
+        ),
+        102
+);
 
-        let buyer_store =
-            borrow_global_mut<NFTStore>(
-                buyer
-            );
+let nft =
+    table::remove(
+        &mut seller_store.nfts,
+        nft_id
+    );
 
-        let transferred = NFT {
-            id: nft.id,
-            name: nft.name,
-            uri: nft.uri,
-            owner: buyer
-        };
+        assert!(
+    exists<NFTStore>(buyer),
+    101
+);
 
-        table::add(
-            &mut buyer_store.nfts,
-            nft_id,
-            transferred
-        );
-    }
-}
+let buyer_store =
+    borrow_global_mut<NFTStore>(
+        buyer
+    );
+
+assert!(
+    !table::contains(
+        &buyer_store.nfts,
+        nft_id
+    ),
+    103
+);
+
+let transferred = NFT {
+    id: nft.id,
+    name: nft.name,
+    uri: nft.uri,
+    owner: buyer
+};
+
+table::add(
+    &mut buyer_store.nfts,
+    nft_id,
+    transferred
+);

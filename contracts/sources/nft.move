@@ -1,7 +1,6 @@
 module MyNFT::NFT {
-
-    use std::string;
     use std::signer;
+    use std::string;
 
     struct NFT has key, store {
         id: u64,
@@ -11,19 +10,18 @@ module MyNFT::NFT {
     }
 
     public entry fun mint(
-        creator: &signer,
+        account: &signer,
         name: string::String,
         uri: string::String
     ) {
-        let owner = signer::address_of(creator);
+        let owner = signer::address_of(account);
+        assert!(!exists<NFT>(owner), 1);
 
-        let nft = NFT {
-            id: 1,
+        move_to(account, NFT {
+            id: 0,
             name,
             uri,
             owner
-        };
-
-        move_to(creator, nft);
+        });
     }
 }

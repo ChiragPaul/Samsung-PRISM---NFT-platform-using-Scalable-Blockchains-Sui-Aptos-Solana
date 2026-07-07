@@ -18,7 +18,7 @@ export default function Home() {
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <div className="inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200">
-              Live on Aptos Devnet
+              Live on Aptos Testnet
             </div>
 
             <h1 className="mt-8 text-5xl font-semibold leading-[0.92] tracking-tight sm:text-6xl lg:text-8xl">
