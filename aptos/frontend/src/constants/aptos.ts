@@ -1,0 +1,24 @@
+import { Network } from "@aptos-labs/ts-sdk"
+
+export const APTOS_NETWORK = Network.TESTNET
+export const APTOS_NETWORK_NAME = "testnet"
+
+export const REAL_NFT_MODULE_ADDRESS =
+  "0x7ff96292c8374435778564e0a738baa0867dee0d43bc08e7363cfef6c0dabc44";
+
+export const REAL_NFT_MODULE_NAME = "RealNFT"
+export const REAL_NFT_INIT_FUNCTION = `${REAL_NFT_MODULE_ADDRESS}::${REAL_NFT_MODULE_NAME}::init`
+export const REAL_NFT_MINT_FUNCTION = `${REAL_NFT_MODULE_ADDRESS}::${REAL_NFT_MODULE_NAME}::mint`
+export const REAL_NFT_STORE = `${REAL_NFT_MODULE_ADDRESS}::${REAL_NFT_MODULE_NAME}::NFTStore`
+
+export const MARKETPLACE_MODULE_NAME = "Marketplace"
+export const MARKETPLACE_STORE = `${REAL_NFT_MODULE_ADDRESS}::${MARKETPLACE_MODULE_NAME}::MarketplaceStore`
+export const MARKETPLACE_ACCOUNT = REAL_NFT_MODULE_ADDRESS
+export const MARKETPLACE_INIT_FUNCTION = `${REAL_NFT_MODULE_ADDRESS}::${MARKETPLACE_MODULE_NAME}::init`
+export const MARKETPLACE_LIST_FUNCTION = `${REAL_NFT_MODULE_ADDRESS}::${MARKETPLACE_MODULE_NAME}::list_nft`
+export const MARKETPLACE_CANCEL_FUNCTION = `${REAL_NFT_MODULE_ADDRESS}::${MARKETPLACE_MODULE_NAME}::cancel_listing`
+export const MARKETPLACE_BUY_FUNCTION = `${REAL_NFT_MODULE_ADDRESS}::${MARKETPLACE_MODULE_NAME}::buy_nft`
+
+export const APTOS_FULLNODE_URL = "https://fullnode.testnet.aptoslabs.com/v1"
+
+export const MARKETPLACE_ACCOUNTS: string[] = []

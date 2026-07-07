@@ -1,0 +1,17 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+!frontend/.env.example
+
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+
+contracts/.aptos/
+contracts/build/
+
+backend/node_modules/
+frontend_backup/
+frontend.zip
+node_modules/

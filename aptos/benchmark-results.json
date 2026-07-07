@@ -1,0 +1,261 @@
+{
+  "iterations": 5,
+  "mode": "all",
+  "concurrent": false,
+  "generatedAt": "2026-07-01T11:31:57.103Z",
+  "summary": {
+    "iterations": 0,
+    "mode": "all",
+    "concurrent": false,
+    "totalTransactions": 20,
+    "totalExecutionTimeMs": 52296.523459,
+    "tps": 0.382434599418063,
+    "successfulTransactions": 20,
+    "failedTransactions": 0,
+    "successPercentage": 100,
+    "operations": {
+      "mint": {
+        "minLatencyMs": 764.5806659999998,
+        "avgLatencyMs": 1174.7461250000001,
+        "maxLatencyMs": 2339.19175,
+        "avgGasUsed": 4616,
+        "minGasUsed": 4616,
+        "maxGasUsed": 4616,
+        "successfulTransactions": 5,
+        "failedTransactions": 0
+      },
+      "list": {
+        "minLatencyMs": 849.9842499999995,
+        "avgLatencyMs": 976.1703999999994,
+        "maxLatencyMs": 1255.1461250000011,
+        "avgGasUsed": 4415,
+        "minGasUsed": 4415,
+        "maxGasUsed": 4415,
+        "successfulTransactions": 5,
+        "failedTransactions": 0
+      },
+      "buy": {
+        "minLatencyMs": 757.7814590000016,
+        "avgLatencyMs": 878.108367,
+        "maxLatencyMs": 943.0214170000036,
+        "avgGasUsed": 4744,
+        "minGasUsed": 4744,
+        "maxGasUsed": 4744,
+        "successfulTransactions": 5,
+        "failedTransactions": 0
+      },
+      "delist": {
+        "minLatencyMs": 762.2420839999977,
+        "avgLatencyMs": 882.5769749999993,
+        "maxLatencyMs": 1127.3820829999968,
+        "avgGasUsed": 49,
+        "minGasUsed": 49,
+        "maxGasUsed": 49,
+        "successfulTransactions": 5,
+        "failedTransactions": 0
+      }
+    }
+  },
+  "results": [
+    {
+      "operation": "mint",
+      "iteration": 1,
+      "startTime": 1176.9245,
+      "endTime": 3516.11625,
+      "latencyMs": 2339.19175,
+      "gasUsed": 4616,
+      "transactionHash": "0x96c623ac04ad19059057f372421b029335f94a43cd44c89c2b83e40ce7b76bfe",
+      "success": true
+    },
+    {
+      "operation": "mint",
+      "iteration": 2,
+      "startTime": 3701.157167,
+      "endTime": 4741.475709,
+      "latencyMs": 1040.3185420000004,
+      "gasUsed": 4616,
+      "transactionHash": "0x72dcae05ccdfcfbb29981eee5404b810556606fe57a89c02733bea971ff88758",
+      "success": true
+    },
+    {
+      "operation": "mint",
+      "iteration": 3,
+      "startTime": 4920.674125,
+      "endTime": 5769.142417,
+      "latencyMs": 848.4682920000005,
+      "gasUsed": 4616,
+      "transactionHash": "0x3f0103229cb672bc91f6e257b5c46c10862b8dfee69ccc950a779834955201f3",
+      "success": true
+    },
+    {
+      "operation": "mint",
+      "iteration": 4,
+      "startTime": 5958.777959,
+      "endTime": 6839.949334,
+      "latencyMs": 881.1713749999999,
+      "gasUsed": 4616,
+      "transactionHash": "0xd6737f5dc76f3d8621f6a33b82ce3b4d9d5a6c7a3c27d6ba344f34abf08b436c",
+      "success": true
+    },
+    {
+      "operation": "mint",
+      "iteration": 5,
+      "startTime": 7026.192334,
+      "endTime": 7790.773,
+      "latencyMs": 764.5806659999998,
+      "gasUsed": 4616,
+      "transactionHash": "0x20422a277b9c43792e07343a10f3663a7bd1560a0f000509ea8972f9d33dbf3b",
+      "success": true
+    },
+    {
+      "operation": "list",
+      "iteration": 1,
+      "startTime": 9327.696084,
+      "endTime": 10582.842209,
+      "latencyMs": 1255.1461250000011,
+      "gasUsed": 4415,
+      "transactionHash": "0x258d4f54350349107d962f6883cec46dcf7ceda3955f3d43fbe53cb3a77e87b4",
+      "success": true
+    },
+    {
+      "operation": "list",
+      "iteration": 2,
+      "startTime": 11962.058792,
+      "endTime": 12935.038584,
+      "latencyMs": 972.9797920000001,
+      "gasUsed": 4415,
+      "transactionHash": "0x2e24e0610c425b0a43a634cf74944230e564d80465397d8556b1d3f00a8aae1e",
+      "success": true
+    },
+    {
+      "operation": "list",
+      "iteration": 3,
+      "startTime": 14447.669,
+      "endTime": 15297.65325,
+      "latencyMs": 849.9842499999995,
+      "gasUsed": 4415,
+      "transactionHash": "0xebc20a98b6babe830c746dea328bcabe52cf24f3e730abd508ef8dd4ce92568f",
+      "success": true
+    },
+    {
+      "operation": "list",
+      "iteration": 4,
+      "startTime": 16892.210209,
+      "endTime": 17760.271209,
+      "latencyMs": 868.0609999999979,
+      "gasUsed": 4415,
+      "transactionHash": "0xb0d82be3a8421b641a4f67efb345663d3021b0d9374d81c11483a6a5cb69cb9c",
+      "success": true
+    },
+    {
+      "operation": "list",
+      "iteration": 5,
+      "startTime": 19475.191584,
+      "endTime": 20409.872417,
+      "latencyMs": 934.6808329999985,
+      "gasUsed": 4415,
+      "transactionHash": "0xa05911466dfbbcaa67127fabaf837deb27247861a9d2a98f85021056c6475055",
+      "success": true
+    },
+    {
+      "operation": "buy",
+      "iteration": 1,
+      "startTime": 22972.279167,
+      "endTime": 23894.629459,
+      "latencyMs": 922.3502919999992,
+      "gasUsed": 4744,
+      "transactionHash": "0x9acc97ee49d0d0a6084eb3623561570b0eef1ffe0da3dc9ce9f4b89d76043656",
+      "success": true
+    },
+    {
+      "operation": "buy",
+      "iteration": 2,
+      "startTime": 26151.561625,
+      "endTime": 27013.873625,
+      "latencyMs": 862.3120000000017,
+      "gasUsed": 4744,
+      "transactionHash": "0x71201b51efe800371dab8618f0441add7c3a79cd07f0dbc76d25f5e8bb0ba6b1",
+      "success": true
+    },
+    {
+      "operation": "buy",
+      "iteration": 3,
+      "startTime": 29481.4705,
+      "endTime": 30239.251959,
+      "latencyMs": 757.7814590000016,
+      "gasUsed": 4744,
+      "transactionHash": "0xd914152e8c13c707ac2cb83ceccf09650e3606c68bf18e48a8a25f0beba96465",
+      "success": true
+    },
+    {
+      "operation": "buy",
+      "iteration": 4,
+      "startTime": 32918.911417,
+      "endTime": 33823.988084,
+      "latencyMs": 905.0766669999939,
+      "gasUsed": 4744,
+      "transactionHash": "0xef7efde94e39927fc1876589e0ee151e4cad9029d3c22359da8507df01694d2c",
+      "success": true
+    },
+    {
+      "operation": "buy",
+      "iteration": 5,
+      "startTime": 36242.691042,
+      "endTime": 37185.712459,
+      "latencyMs": 943.0214170000036,
+      "gasUsed": 4744,
+      "transactionHash": "0xd1bd1e18537326908891e019d5547f166ecac4e9eaf9a911dd9f259086ba102a",
+      "success": true
+    },
+    {
+      "operation": "delist",
+      "iteration": 1,
+      "startTime": 39662.677667,
+      "endTime": 40453.510209,
+      "latencyMs": 790.8325419999965,
+      "gasUsed": 49,
+      "transactionHash": "0x76547800dd4f69130ce711c361159c0e7af4248426502c8af8f693624d6d5e49",
+      "success": true
+    },
+    {
+      "operation": "delist",
+      "iteration": 2,
+      "startTime": 42939.451917,
+      "endTime": 43733.633667,
+      "latencyMs": 794.1817500000034,
+      "gasUsed": 49,
+      "transactionHash": "0x554400f919c5582a43ec6b340dfb34ce180a5cdb8249a6793b4e1261b6e1427f",
+      "success": true
+    },
+    {
+      "operation": "delist",
+      "iteration": 3,
+      "startTime": 45900.932834,
+      "endTime": 46839.17925,
+      "latencyMs": 938.2464160000018,
+      "gasUsed": 49,
+      "transactionHash": "0x8b6301b571f14de786b353b2d51b49907c7ae1b706048cd6f5184af24cb85d86",
+      "success": true
+    },
+    {
+      "operation": "delist",
+      "iteration": 4,
+      "startTime": 49288.213917,
+      "endTime": 50415.596,
+      "latencyMs": 1127.3820829999968,
+      "gasUsed": 49,
+      "transactionHash": "0x34aaaca2d25401ddf94c779e435fe8900947b39373161d1c61a477bc5ce7bb39",
+      "success": true
+    },
+    {
+      "operation": "delist",
+      "iteration": 5,
+      "startTime": 52711.205875,
+      "endTime": 53473.447959,
+      "latencyMs": 762.2420839999977,
+      "gasUsed": 49,
+      "transactionHash": "0x406053cd5df977718045710984dafeb0484695e3fc7a3384a5935aa4465acb31",
+      "success": true
+    }
+  ]
+}

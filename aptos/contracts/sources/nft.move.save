@@ -1,0 +1,23 @@
+module MyNFT::NFT {
+
+    use std::string;
+    use std::signer;
+
+    struct SimpleNFT has key {
+        id: u64,
+        name: string::String
+    }
+
+    public entry fun create(
+        account: &signer,
+        name: string::String
+    ) {
+        move_to(
+            account,
+            SimpleNFT {
+                id: 0,
+                name
+            }
+        );
+    }
+}

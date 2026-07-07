@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aptos NFT Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#93000a",
+                    "on-surface-variant": "#cfc2d6",
+                    "on-tertiary-fixed-variant": "#004e5a",
+                    "secondary-fixed": "#d8e2ff",
+                    "secondary-container": "#0566d9",
+                    "on-secondary-container": "#e6ecff",
+                    "surface-container-high": "#2a2a2a",
+                    "tertiary": "#2fd9f4",
+                    "surface-bright": "#3a3939",
+                    "error": "#ffb4ab",
+                    "surface-variant": "#353534",
+                    "on-error-container": "#ffdad6",
+                    "on-surface": "#e5e2e1",
+                    "background": "#131313",
+                    "on-secondary-fixed": "#001a42",
+                    "inverse-surface": "#e5e2e1",
+                    "outline": "#988d9f",
+                    "on-primary-fixed-variant": "#6900b3",
+                    "surface": "#131313",
+                    "on-tertiary-fixed": "#001f25",
+                    "surface-tint": "#ddb7ff",
+                    "primary": "#ddb7ff",
+                    "inverse-primary": "#842bd2",
+                    "tertiary-fixed-dim": "#2fd9f4",
+                    "primary-container": "#b76dff",
+                    "on-primary": "#490080",
+                    "tertiary-container": "#009fb4",
+                    "on-error": "#690005",
+                    "on-secondary-fixed-variant": "#004395",
+                    "on-secondary": "#002e6a",
+                    "surface-container-highest": "#353534",
+                    "on-primary-fixed": "#2c0051",
+                    "on-tertiary-container": "#002f36",
+                    "on-tertiary": "#00363e",
+                    "primary-fixed": "#f0dbff",
+                    "surface-dim": "#131313",
+                    "secondary-fixed-dim": "#adc6ff",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-primary-container": "#400071",
+                    "tertiary-fixed": "#a2eeff",
+                    "outline-variant": "#4d4354",
+                    "secondary": "#adc6ff",
+                    "surface-container-low": "#1c1b1b",
+                    "on-background": "#e5e2e1",
+                    "surface-container": "#201f1f",
+                    "inverse-on-surface": "#313030",
+                    "primary-fixed-dim": "#ddb7ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(53, 53, 52, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(221, 183, 255, 0.15), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(47, 217, 244, 0.1), transparent 40%);
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body selection:bg-primary/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-zinc-950/40 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.4),0_0_20px_rgba(168,85,247,0.05)] h-20 flex justify-between items-center px-8 w-full font-manrope tracking-tight">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-bold tracking-tighter text-purple-300">Aptos NFT Marketplace</span>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-purple-300 font-bold border-b-2 border-purple-300 pb-1" href="#">Explore</a>
+<a class="text-zinc-400 hover:text-purple-200 transition-colors" href="#">Mint</a>
+<a class="text-zinc-400 hover:text-purple-200 transition-colors" href="#">Activity</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container px-4 py-2 rounded-full border border-outline-variant/15">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-on-surface-variant" placeholder="Search collections..." type="text"/>
+</div>
+<button class="flex items-center gap-2 bg-gradient-to-r from-primary to-primary-container text-on-primary px-6 py-2.5 rounded-full font-bold text-sm tracking-wider uppercase transition-transform scale-95 active:scale-90">
+<span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+<span>Connect Wallet</span>
+</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Abstract geometric avatar with purple and blue gradients representing a crypto wallet identity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA-4MV9f9KGvlpMIJopheLEnEevteDZUBwxJe5fDbUiBsphrA8iZMNrxyiTB17qnoaxIHq1FK4u3Q2f67QxyKJmeQMRneqlxY5Jn6nnhk3q5h_er3VuAz6bIwHj00HKb28Ihd72uno1ESaK63us7lKwYR6uZFJk2zaYM1JJ2RdMSmp9OEapS2RSb2SBW5dFjuDVUCqKbaM1SSs26ialQjIpbuQPEfznCJ75hWmvv2m517P3XNWA5m68Zo3S8auNLKOO5VfNuaLELo"/>
+</div>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[870px] flex items-center px-8 lg:px-24 hero-gradient overflow-hidden">
+<div class="max-w-4xl z-10">
+<div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-surface-container-high border border-outline-variant/20 mb-8">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse shadow-[0_0_10px_#2fd9f4]"></span>
+<span class="text-xs font-label uppercase tracking-widest text-on-surface-variant">Live on Aptos Mainnet</span>
+</div>
+<h1 class="text-5xl lg:text-8xl font-headline font-extrabold tracking-tighter leading-[0.9] mb-8">
+                    Next-Gen NFT <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">Marketplace</span> <br/>
+                    on Aptos
+                </h1>
+<p class="text-xl text-on-surface-variant font-light max-w-xl mb-12 leading-relaxed">
+                    Experience the speed of Aptos. Curate, trade, and mint high-fidelity digital artifacts in a velvet-dark ecosystem designed for the modern collector.
+                </p>
+<div class="flex flex-wrap gap-6">
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-10 py-4 rounded-full font-bold text-base tracking-widest uppercase hover:shadow-[0_0_30px_rgba(221,183,255,0.3)] transition-all">
+                        Explore Marketplace
+                    </button>
+<button class="glass-panel border border-primary/30 text-primary px-10 py-4 rounded-full font-bold text-base tracking-widest uppercase hover:bg-primary/10 transition-all">
+                        Mint NFT
+                    </button>
+</div>
+</div>
+<!-- Asymmetric Decorative Element -->
+<div class="absolute right-[-5%] top-[15%] w-[45%] aspect-square hidden lg:block">
+<div class="relative w-full h-full">
+<div class="absolute inset-0 rounded-xl overflow-hidden shadow-2xl rotate-6 hover:rotate-0 transition-transform duration-700 bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Hyper-realistic 3D digital art piece featuring floating obsidian spheres and glowing violet energy ribbons in a void" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWBEXATvGvTp4wArzT1D1z0wIjH_uyAHcYXUZKPT_nQ8jzpeqdmqLUTWOfOev1x_fwQHlDAVzbQLOmjE_3X5oHJpho71ZL0KtoZXDfWcsFn1Ivh37d7T0fVq46Y13fibzzh6EOoTLYJkydwW2HSzVHtsftfDgAPKNkMX-IwWi0cubaSC6r9I0ALfIKM7rIqA0wZZJe0MxcBP878Z7WcEeuF-4_OYgbLAE2dvDZfLf0pokFEwIJBPMSpWq653TikyRdPhXwQGyEJIA"/>
+</div>
+<div class="absolute -bottom-10 -left-10 glass-panel p-6 rounded-lg border border-outline-variant/30 w-64 shadow-2xl">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-container"></div>
+<div>
+<p class="text-xs text-on-surface-variant">Featured Artist</p>
+<p class="font-bold text-sm">Ether_Void</p>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-xs text-on-surface-variant">Current Bid</p>
+<p class="font-headline font-bold text-lg text-tertiary">42.5 APT</p>
+</div>
+<span class="material-symbols-outlined text-primary">trending_up</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- NFT Gallery Grid Section -->
+<section class="py-24 px-8 lg:px-12 bg-surface">
+<div class="flex flex-col md:flex-row justify-between items-end gap-8 mb-16">
+<div>
+<h2 class="text-4xl font-headline font-bold tracking-tight mb-4">The Curator's Selection</h2>
+<div class="flex gap-4">
+<button class="px-6 py-2 rounded-full bg-primary text-on-primary font-bold text-sm">All Items</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors font-bold text-sm">My Collection</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors font-bold text-sm">Recently Listed</button>
+</div>
+</div>
+<div class="w-full md:w-96">
+<div class="relative bg-surface-container-lowest rounded-full p-1 border border-outline-variant/10 focus-within:border-primary/50 transition-colors">
+<input class="w-full bg-transparent border-none focus:ring-0 px-6 py-3 text-sm placeholder:text-zinc-600" placeholder="Filter by name, trait or ID..." type="text"/>
+<button class="absolute right-2 top-1.5 p-2 rounded-full bg-surface-container-high text-on-surface">
+<span class="material-symbols-outlined text-lg">tune</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bento-style Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- NFT Card 1 -->
+<div class="group relative bg-surface-container rounded-lg overflow-hidden transition-all duration-500 hover:translate-y-[-8px] hover:shadow-[0_20px_40px_rgba(0,0,0,0.4),0_0_20px_rgba(168,85,247,0.1)]">
+<div class="aspect-square overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Digital portrait of a futuristic cyborg entity with neon bioluminescent patterns and holographic eyes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn3qwsTdDOFW6cYWB69YB2W9C4XAtx_Km1C55GXmN3hmCVzEA8UtX5erZIPkrcLqgE4QY13qb4eLnJjcGlomklTAIFif8zTNN22-Kyf7AX8qieqyMs9mgreG8q8TwtNUeXeO0nftsbzLCbpbQyvCDfd7Rd5M5CaenLxAWvdDOhYYRGTMw0rtUXWssktfMp6zC18OtS1woQuAB1M-i0aNOJyw00QvqS1fi6osUa7vG6zBc8j6T9rN2g-aYQFMS7_dmzy0AWsk-6mxM"/>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline font-bold text-xl mb-1">Cyber-Fragment #081</h3>
+<p class="text-xs font-mono text-on-surface-variant">0x72a...1234</p>
+</div>
+<span class="text-xs bg-surface-container-highest px-3 py-1 rounded-full text-tertiary border border-tertiary/20">ID: 8021</span>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant/10">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Current Price</p>
+<p class="font-headline font-bold text-lg text-primary">12.4 APT</p>
+</div>
+<button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary transition-all px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider">Buy Now</button>
+</div>
+</div>
+</div>
+<!-- NFT Card 2 -->
+<div class="group relative bg-surface-container rounded-lg overflow-hidden transition-all duration-500 hover:translate-y-[-8px] hover:shadow-[0_20px_40px_rgba(0,0,0,0.4),0_0_20px_rgba(168,85,247,0.1)]">
+<div class="aspect-square overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Surreal digital landscape with floating crystal structures reflecting a deep indigo sky and electric cyan nebulas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEvKnjNTAGQl5rP_Z82x_QFFnRqxSvO-4-7KQmFdXwcxImjZzLTBbfV6Woa6FS-0SQuiUw-RR7y_KjaFfQl2sSKCokpxKIuS--oskvaGoYHP7h51nPpl63o_OX713I-fFbMWig7ikFpLvXGUMbgwDtc6fZT59rzcYiT-NbTj92fHCKuU1HXqWivRtwdHj84SjcaR2bIBdBkzGxOF7mjgic3onR5bh8tCeedfx1IIs1T5ogyif75iKsD5Eu62aKDvDlBove5b6rICM"/>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline font-bold text-xl mb-1">Nebula Crystal</h3>
+<p class="text-xs font-mono text-on-surface-variant">0x34d...9982</p>
+</div>
+<span class="text-xs bg-surface-container-highest px-3 py-1 rounded-full text-tertiary border border-tertiary/20">ID: 1145</span>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant/10">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Floor Price</p>
+<p class="font-headline font-bold text-lg text-primary">8.9 APT</p>
+</div>
+<button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary transition-all px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider">Buy Now</button>
+</div>
+</div>
+</div>
+<!-- NFT Card 3 -->
+<div class="group relative bg-surface-container rounded-lg overflow-hidden transition-all duration-500 hover:translate-y-[-8px] hover:shadow-[0_20px_40px_rgba(0,0,0,0.4),0_0_20px_rgba(168,85,247,0.1)]">
+<div class="aspect-square overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Minimalist abstract 3D render of glass prisms dispersing light into rainbow spectrums on a velvet black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0xOJZbU0qHVXBfzQBjHI65vgFW4UItvtG3sFYdB7rCEnjEX_tXtg7WGZ9ozamiv_P2m4lHIwoxq38igF5aTYGjEi0bPovRuE7pVQGpPmIO7-0xnkRsheSE_n45FNW0PvRZ1EBjVf6u0GX6bPWkoef9InlTWy9VqG_ISCl8u8enRgTMpWkdtMapkj3ecHzN-c6wi4_Q9aWqH2PAE5PiySm-zLkElxI7erNBPXCZn4YTuRnoEu1jgfdRlH21B_whkRzh9fqbl-6rfk"/>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline font-bold text-xl mb-1">Prism Logic #02</h3>
+<p class="text-xs font-mono text-on-surface-variant">0xaf1...5567</p>
+</div>
+<span class="text-xs bg-surface-container-highest px-3 py-1 rounded-full text-tertiary border border-tertiary/20">ID: 992</span>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant/10">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Your Listing</p>
+<p class="font-headline font-bold text-lg text-primary">15.0 APT</p>
+</div>
+<button class="glass-panel border border-primary/40 text-on-surface px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider">Unlist</button>
+</div>
+</div>
+</div>
+<!-- NFT Card 4 -->
+<div class="group relative bg-surface-container rounded-lg overflow-hidden transition-all duration-500 hover:translate-y-[-8px] hover:shadow-[0_20px_40px_rgba(0,0,0,0.4),0_0_20px_rgba(168,85,247,0.1)]">
+<div class="aspect-square overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Cinematic 3D animation frame of a liquid chrome sculpture morphing in mid-air under dramatic studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBytZbyMQY9hOjauLYP1IK2VFWBmPbGVkdPrhntYeaFyh916ShZforJ3xw-4fZbNt8gh8cZXaxixtyFsd92oK-TuUixQLr_uiC6thRTwI5Rlsn-91zouUG6uVwAJekP3dpWFhWUN2Dvzr1yaMjDAeUnnz_x5AWtPGkhduhWcoG2l6jJr_iH8BQDyYRCzKZIqEjeU2rJBaLtwQFpBrhAk0awUH8S11AGYFerTHNhiI8sEoOJ_m5LkTWZT3Z2JXkxYjuFIIv9-4hQ4Wo"/>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline font-bold text-xl mb-1">Fluid Metal Art</h3>
+<p class="text-xs font-mono text-on-surface-variant">0x992...3312</p>
+</div>
+<span class="text-xs bg-surface-container-highest px-3 py-1 rounded-full text-tertiary border border-tertiary/20">ID: 77</span>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant/10">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Auction</p>
+<p class="font-headline font-bold text-lg text-primary">2.1k APT</p>
+</div>
+<button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary transition-all px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider">Bid</button>
+</div>
+</div>
+</div>
+</div>
+<!-- View All Anchor -->
+<div class="mt-20 text-center">
+<button class="inline-flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors font-headline font-bold text-lg group">
+                    View Entire Collection
+                    <span class="material-symbols-outlined transition-transform group-hover:translate-x-2">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Feature Section: Speed of Aptos -->
+<section class="py-24 px-8 lg:px-24 bg-surface-container-low">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+<div class="relative order-2 lg:order-1">
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-highest p-8 rounded-lg">
+<span class="material-symbols-outlined text-4xl text-primary mb-4">bolt</span>
+<h4 class="font-bold text-xl mb-2">Instant Mint</h4>
+<p class="text-sm text-on-surface-variant">Transactions finalized in sub-second latency on the Aptos network.</p>
+</div>
+<div class="bg-surface-container-highest p-8 rounded-lg mt-8">
+<span class="material-symbols-outlined text-4xl text-secondary mb-4">security</span>
+<h4 class="font-bold text-xl mb-2">Move Secure</h4>
+<p class="text-sm text-on-surface-variant">Powered by Move, the safest language for smart contract development.</p>
+</div>
+</div>
+</div>
+<div class="order-1 lg:order-2">
+<h2 class="text-4xl lg:text-6xl font-headline font-extrabold tracking-tight mb-8">Evolved <br/>Performance</h2>
+<p class="text-lg text-on-surface-variant leading-relaxed mb-10">
+                        Traditional marketplaces are bogged down by high fees and slow confirmations. We leverage the Aptos parallel execution engine to deliver a trading experience as smooth as the digital art it hosts.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-center gap-4">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<span class="font-medium">160k+ Transactions Per Second</span>
+</li>
+<li class="flex items-center gap-4">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<span class="font-medium">Near-Zero Gas Fees for Collectors</span>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-zinc-950 w-full py-12 px-8 border-t border-zinc-800/20">
+<div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto">
+<div class="mb-8 md:mb-0">
+<p class="font-headline font-bold text-xl text-purple-300 mb-2">Aptos NFT Marketplace</p>
+<p class="font-inter text-sm uppercase tracking-widest text-zinc-500">Built on Aptos</p>
+</div>
+<div class="flex gap-12 font-inter text-sm uppercase tracking-widest text-zinc-500">
+<a class="hover:text-cyan-400 transition-colors opacity-80 hover:opacity-100" href="#">Terms</a>
+<a class="hover:text-cyan-400 transition-colors opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="hover:text-cyan-400 transition-colors opacity-80 hover:opacity-100" href="#">Discord</a>
+</div>
+<div class="mt-8 md:mt-0 flex gap-4">
+<a class="w-10 h-10 rounded-full flex items-center justify-center bg-zinc-900 border border-zinc-800 hover:border-primary/50 transition-all" href="#">
+<img class="w-5 h-5" data-alt="Twitter logo icon white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyiMmI3ngq4deRQMehPQUhWqRyWDPFOrUAeYVanms5XiIiEF-Y0_gGgJhb5ZsJDfWFjn4ZT_rkDnJXin7m1-jOGTGDrdqlrCaLyZXp4xwXrMtptVZQse620gJNk_GaSWjADXL_XqiAFWnCr4nFzsLRkKJ1Apb6ABjyzOUmM7WVym0G5TV9d2PXOcQ-mxXVwcOryQ0dpPJtDumbnc_JzzJ1gDHdtRCbpFAupHqWnlBg8E2DdC-C2zZ-_9Snp4Xp7DCuL_4QrjW1uFU"/>
+</a>
+<a class="w-10 h-10 rounded-full flex items-center justify-center bg-zinc-900 border border-zinc-800 hover:border-primary/50 transition-all" href="#">
+<img class="w-5 h-5" data-alt="Github logo icon white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDQu64RT0txnzo3DGeFopJWiZdWqIqa0jAr7Cmq3IS7DIc9-Q4e7RdqMFTK72Oi-erP72o9xqeIhsV_zwhaKjA_gn-Imnn2yyPhVOrXPHLmChzUljReFdPgrbQYMtslyT5WP3KIeEYBr8Fhtkx3XzP2XPMHC6VeFRXwqtYujQaZ3WWyhUWGAPy_ussL3iodiTD5GKE4KQ2baWdcKXuuH8VXbIS0tIkDLW-MIpprOTfy2GPeMQpCMHzrRxWCz41EWHWNaGaZx5lm3U"/>
+</a>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-zinc-800/20 text-center text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+            © 2024 Luminescent Curator Protocol. All digital artifacts are secured by Aptos.
+        </div>
+</footer>
+</body></html>
