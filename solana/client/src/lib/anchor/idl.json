@@ -1,0 +1,161 @@
+{
+  "address": "6MAZYi6WaiB8ztJuJjoAVkbQDxZxfuQuJR3KfrfZncih",
+  "metadata": {
+    "name": "nft_marketplace",
+    "version": "1.0.0",
+    "spec": "0.1.0",
+    "description": "Escrow-based NFT marketplace: list, purchase, delist, with an admin-configurable fee."
+  },
+  "instructions": [
+    {
+      "name": "initialize_marketplace",
+      "discriminator": [47, 81, 64, 0, 96, 56, 105, 7],
+      "accounts": [
+        {
+          "name": "marketplace",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              { "kind": "const", "value": [109, 97, 114, 107, 101, 116, 112, 108, 97, 99, 101] },
+              { "kind": "arg", "path": "name" }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              { "kind": "const", "value": [116, 114, 101, 97, 115, 117, 114, 121] },
+              { "kind": "account", "path": "marketplace" }
+            ]
+          }
+        },
+        { "name": "authority", "writable": true, "signer": true },
+        { "name": "system_program", "address": "11111111111111111111111111111111" }
+      ],
+      "args": [
+        { "name": "name", "type": "string" },
+        { "name": "fee_bps", "type": "u16" }
+      ]
+    },
+    {
+      "name": "list_nft",
+      "discriminator": [88, 221, 93, 166, 63, 220, 106, 232],
+      "accounts": [
+        { "name": "marketplace", "writable": true },
+        {
+          "name": "listing",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              { "kind": "const", "value": [108, 105, 115, 116, 105, 110, 103] },
+              { "kind": "account", "path": "marketplace" },
+              { "kind": "account", "path": "nft_mint" }
+            ]
+          }
+        },
+        { "name": "seller", "writable": true, "signer": true },
+        { "name": "nft_mint" },
+        { "name": "seller_token_account", "writable": true },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              { "kind": "const", "value": [118, 97, 117, 108, 116] },
+              { "kind": "account", "path": "marketplace" },
+              { "kind": "account", "path": "nft_mint" }
+            ]
+          }
+        },
+        { "name": "token_program", "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" },
+        { "name": "system_program", "address": "11111111111111111111111111111111" }
+      ],
+      "args": [{ "name": "price", "type": "u64" }]
+    },
+    {
+      "name": "purchase_nft",
+      "discriminator": [217, 35, 113, 146, 250, 29, 8, 209],
+      "accounts": [
+        { "name": "marketplace", "writable": true },
+        { "name": "listing", "writable": true },
+        { "name": "buyer", "writable": true, "signer": true },
+        { "name": "seller", "writable": true },
+        { "name": "treasury", "writable": true },
+        { "name": "nft_mint" },
+        { "name": "vault", "writable": true },
+        { "name": "buyer_token_account", "writable": true },
+        { "name": "token_program", "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" },
+        { "name": "associated_token_program", "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL" },
+        { "name": "system_program", "address": "11111111111111111111111111111111" }
+      ],
+      "args": []
+    },
+    {
+      "name": "delist_nft",
+      "discriminator": [91, 249, 165, 185, 22, 7, 119, 176],
+      "accounts": [
+        { "name": "marketplace", "writable": true },
+        { "name": "listing", "writable": true },
+        { "name": "seller", "writable": true, "signer": true },
+        { "name": "nft_mint" },
+        { "name": "vault", "writable": true },
+        { "name": "seller_token_account", "writable": true },
+        { "name": "token_program", "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" }
+      ],
+      "args": []
+    },
+    {
+      "name": "update_fee",
+      "discriminator": [232, 253, 195, 247, 148, 212, 73, 222],
+      "accounts": [
+        { "name": "marketplace", "writable": true },
+        { "name": "authority", "signer": true }
+      ],
+      "args": [{ "name": "fee_bps", "type": "u16" }]
+    }
+  ],
+  "accounts": [
+    { "name": "Marketplace", "discriminator": [70, 222, 41, 62, 78, 3, 32, 174] },
+    { "name": "Listing", "discriminator": [218, 32, 50, 73, 43, 134, 26, 58] }
+  ],
+  "errors": [
+    { "code": 6000, "name": "FeeTooHigh", "msg": "Fee exceeds the maximum allowed (10000 bps)." },
+    { "code": 6001, "name": "Unauthorized", "msg": "Signer is not the marketplace authority." },
+    { "code": 6002, "name": "InvalidPrice", "msg": "Listing price must be greater than zero." },
+    { "code": 6003, "name": "ListingInactive", "msg": "Listing is no longer active." },
+    { "code": 6004, "name": "NumericalOverflow", "msg": "Numerical overflow." }
+  ],
+  "types": [
+    {
+      "name": "Marketplace",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "authority", "type": "pubkey" },
+          { "name": "treasury", "type": "pubkey" },
+          { "name": "feeBps", "type": "u16" },
+          { "name": "name", "type": "string" },
+          { "name": "listingsCount", "type": "u64" },
+          { "name": "bump", "type": "u8" },
+          { "name": "treasuryBump", "type": "u8" }
+        ]
+      }
+    },
+    {
+      "name": "Listing",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "seller", "type": "pubkey" },
+          { "name": "nftMint", "type": "pubkey" },
+          { "name": "price", "type": "u64" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "vault", "type": "pubkey" },
+          { "name": "bump", "type": "u8" }
+        ]
+      }
+    }
+  ]
+}

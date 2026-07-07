@@ -1,0 +1,17 @@
+services:
+  marketplace:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        VITE_RPC_URL: ${VITE_RPC_URL:-https://api.devnet.solana.com}
+        VITE_RPC_WS_URL: ${VITE_RPC_WS_URL:-}
+        VITE_PROGRAM_ID: ${VITE_PROGRAM_ID:-6MAZYi6WaiB8ztJuJjoAVkbQDxZxfuQuJR3KfrfZncih}
+        VITE_NETWORK: ${VITE_NETWORK:-devnet}
+        VITE_MARKETPLACE_NAME: ${VITE_MARKETPLACE_NAME:-devnet-marketplace}
+        VITE_FEATURE_OFFERS: ${VITE_FEATURE_OFFERS:-false}
+    image: solana-nft-marketplace:latest
+    container_name: solana-nft-marketplace
+    ports:
+      - "8080:80"
+    restart: unless-stopped
